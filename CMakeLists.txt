@@ -1,11 +1,23 @@
 cmake_minimum_required(VERSION 2.6)
 project(plasp CXX)
 
-option(PLASP_BUILD_TESTS "Build unit tests" OFF)
+option(PLASP_BUILD_TESTS "Build unit tests" ON)
 option(PLASP_BUILD_STATIC "Build static binaries" OFF)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -Werror ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic ${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "-g ${CMAKE_CXX_FLAGS_DEBUG}")
+
+# Add git submodule update command
+execute_process(
+    COMMAND git submodule update --init --recursive
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    RESULT_VARIABLE submodule_result
+)
+
+# Check if the command executed successfully
+if(NOT submodule_result EQUAL "0")
+    message(FATAL_ERROR "Failed to update submodules: ${submodule_result}")
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
