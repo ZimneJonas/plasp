@@ -29,13 +29,14 @@ class TranslatorASP
 		void translateUtils() const;
 		void translateTypes() const;
 		void translatePredicates() const;
+		void translateFunctions() const;
 		void translateDerivedPredicates(const ::pddl::normalizedAST::DerivedPredicateDeclarations &derivedPredicates) const;
 		void translateActions() const;
 
 		void translateProblem() const;
 		void translateInitialState() const;
 		void translateGoal() const;
-		void translateConstants(const std::string &heading, const ::pddl::ast::ConstantDeclarations &constants) const;
+		void translateObjects(const std::string &heading, const ::pddl::ast::ObjectDeclarations &objects) const;
 
 		const ::pddl::normalizedAST::Description &m_description;
 		colorlog::ColorStream &m_outputStream;

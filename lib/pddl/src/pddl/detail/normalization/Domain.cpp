@@ -21,8 +21,9 @@ normalizedAST::DomainPointer normalize(ast::DomainPointer &&domain)
 
 	normalizedDomain->types = std::move(domain->types);
 	normalizedDomain->name = std::move(domain->name);
-	normalizedDomain->constants = std::move(domain->constants);
+	normalizedDomain->objects = std::move(domain->objects);
 	normalizedDomain->predicates = std::move(domain->predicates);
+	normalizedDomain->functions = std::move(domain->functions);
 
 	normalizedDomain->actions.reserve(domain->actions.size());
 

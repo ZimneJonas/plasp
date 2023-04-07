@@ -10,8 +10,8 @@ Unless otherwise noted, this refers to `plasp`’s parser, normalizer, translato
 | PDDL feature | description | supported by `plasp` |
 |---|---|---|
 | STRIPS | basic STRIPS functionality, the general PDDL sections (`:domain`, `:problem`, `:predicates`, `:action`) | yes |
-| typing | typed variables and constants, type inheritance | yes (except for `either` type directives) |
-| negative preconditions | typed variables and constants, type inheritance | yes |
+| typing | typed variables and objects, type inheritance | yes (except for `either` type directives) |
+| negative preconditions | typed variables and objects, type inheritance | yes |
 | disjunctive preconditions | `or` expressions in preconditions | yes |
 | existential preconditions | `exists` expressions in preconditions | yes |
 | universal preconditions | `forall` expressions in preconditions | yes |

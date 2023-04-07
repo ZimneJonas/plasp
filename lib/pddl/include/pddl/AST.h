@@ -6,7 +6,6 @@
 #include <set>
 #include <type_traits>
 #include <vector>
-
 #include <pddl/ASTForward.h>
 
 namespace pddl
@@ -24,35 +23,35 @@ namespace ast
 // Primitives
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct Constant
+struct Object
 {
-	explicit Constant(ConstantDeclaration *declaration)
+	explicit Object(ObjectDeclaration *declaration)
 	:	declaration{declaration}
 	{
 	}
 
-	Constant(const Constant &other) = delete;
-	Constant &operator=(const Constant &&other) = delete;
-	Constant(Constant &&other) = default;
-	Constant &operator=(Constant &&other) = default;
+	Object(const Object &other) = delete;
+	Object &operator=(const Object &&other) = delete;
+	Object(Object &&other) = default;
+	Object &operator=(Object &&other) = default;
 
-	ConstantDeclaration *declaration;
+	ObjectDeclaration *declaration;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct ConstantDeclaration
+struct ObjectDeclaration
 {
-	explicit ConstantDeclaration(std::string &&name, std::experimental::optional<Type> &&type = std::experimental::nullopt)
+	explicit ObjectDeclaration(std::string &&name, std::experimental::optional<Type> &&type = std::experimental::nullopt)
 	:	name{std::move(name)},
 		type{std::move(type)}
 	{
 	}
 
-	ConstantDeclaration(const ConstantDeclaration &other) = delete;
-	ConstantDeclaration &operator=(const ConstantDeclaration &&other) = delete;
-	ConstantDeclaration(ConstantDeclaration &&other) = delete;
-	ConstantDeclaration &operator=(ConstantDeclaration &&other) = delete;
+	ObjectDeclaration(const ObjectDeclaration &other) = delete;
+	ObjectDeclaration &operator=(const ObjectDeclaration &&other) = delete;
+	ObjectDeclaration(ObjectDeclaration &&other) = delete;
+	ObjectDeclaration &operator=(ObjectDeclaration &&other) = delete;
 
 	std::string name;
 	// TODO: check whether “either” types should actually be allowed at all
@@ -387,7 +386,113 @@ struct When: public Binary<When<ArgumentLeft, ArgumentRight>, ArgumentLeft, Argu
 	{
 	}
 };
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Numeric Comparisons
 
+template<class Argument>
+struct Greater: public Binary<Greater<Argument>, Argument>
+{
+	static constexpr const auto Identifier = ">";
+
+	explicit Greater(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<Greater<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Argument>
+struct GreaterEquals: public Binary<Argument>, Argument>
+{
+	static constexpr const auto Identifier = ">=";
+
+	explicit GreaterEquals(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<GreaterEquals<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Argument>
+struct Smaller: public Binary<Smaller<Argument>, Argument>
+{
+	static constexpr const auto Identifier = "<";
+
+	explicit Smaller(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<Smaller<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Argument>
+struct SmallerEquals: public Binary<SmallerEquals<Argument>, Argument>
+{
+	static constexpr const auto Identifier = "<=";
+
+	explicit SmallerEquals(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<SmallerEquals<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Numeric Operations
+
+template<class Argument>
+struct Add: public Binary<Add<Argument>, Argument>
+{
+	static constexpr const auto Identifier = "+";
+
+	explicit Add(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<Add<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Argument>
+struct Subtract: public Binary<Subtract<Argument>, Argument>
+{
+	static constexpr const auto Identifier = "-";
+
+	explicit Subtract(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<Subtract<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Argument>
+struct Multiply: public Binary<Multiply<Argument>, Argument>
+{
+	static constexpr const auto Identifier = "*";
+
+	explicit Multiply(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<Multiply<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<class Argument>
+struct Divide: public Binary<Divide<Argument>, Argument>
+{
+	static constexpr const auto Identifier = "/";
+
+	explicit Divide(ArgumentLeft &&argumentLeft, ArgumentRight &&argumentRight)
+	:	Binary<Divide<Argument>, Argument>(std::move(argumentLeft), std::move(argumentRight))
+	{
+	}
+};
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // PDDL Structure
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,8 +527,10 @@ struct Domain
 	std::string name;
 	Requirements requirements;
 	PrimitiveTypeDeclarations types;
-	ConstantDeclarations constants;
+	ObjectDeclarations objects;
 	PredicateDeclarations predicates;
+	//Functions functions
+	PredicateDeclarations functions;
 	Actions actions;
 };
 
@@ -460,7 +567,7 @@ struct Problem
 	Domain *domain;
 	std::string name;
 	Requirements requirements;
-	ConstantDeclarations objects;
+	ObjectDeclarations objects;
 	InitialState initialState;
 	std::experimental::optional<Goal> goal;
 };

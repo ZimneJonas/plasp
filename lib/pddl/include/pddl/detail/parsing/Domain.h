@@ -27,16 +27,20 @@ class DomainParser
 		void parseRequirementSection(ast::Domain &domain);
 		void computeDerivedRequirements(ast::Domain &domain);
 		void parseTypeSection(ast::Domain &domain);
-		void parseConstantSection(ast::Domain &domain);
+		void parseObjectSection(ast::Domain &domain);
 		void parsePredicateSection(ast::Domain &domain);
 		void parseActionSection(ast::Domain &domain);
+		// CHANGE: add functions
+		void parseFunctionsSection(ast::Domain &domain);
 
 		Context &m_context;
 
 		tokenize::StreamPosition m_requirementsPosition;
 		tokenize::StreamPosition m_typesPosition;
-		tokenize::StreamPosition m_constantsPosition;
+		tokenize::StreamPosition m_objectsPosition;
 		tokenize::StreamPosition m_predicatesPosition;
+		// CHANGE: add functions
+		tokenize::StreamPosition m_functionsPosition;
 		std::vector<tokenize::StreamPosition> m_actionPositions;
 };
 

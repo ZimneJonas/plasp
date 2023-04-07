@@ -42,10 +42,10 @@ inline void translateDerivedPredicate(colorlog::ColorStream &outputStream, const
 	{
 		outputStream << ", ";
 
-		const auto handleConstant =
-			[&](const ::pddl::normalizedAST::ConstantPointer &constant)
+		const auto handleObject =
+			[&](const ::pddl::normalizedAST::ObjectPointer &object)
 			{
-				outputStream << colorlog::Keyword("constant") << "(" << *constant << ")";
+				outputStream << colorlog::Keyword("object") << "(" << *object << ")";
 			};
 
 		const auto handleVariable =
@@ -54,7 +54,7 @@ inline void translateDerivedPredicate(colorlog::ColorStream &outputStream, const
 				translateVariable(outputStream, *variable, variableIDs);
 			};
 
-		argument.match(handleConstant, handleVariable);
+		argument.match(handleObject, handleVariable);
 	}
 
 	outputStream << ")";

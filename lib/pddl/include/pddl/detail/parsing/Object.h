@@ -1,8 +1,9 @@
-#ifndef __PDDL__DETAIL__PARSING__CONSTANT_DECLARATION_H
-#define __PDDL__DETAIL__PARSING__CONSTANT_DECLARATION_H
+#ifndef __PDDL__DETAIL__PARSING__OBJECT_H
+#define __PDDL__DETAIL__PARSING__OBJECT_H
 
 #include <pddl/ASTForward.h>
 #include <pddl/Context.h>
+#include <pddl/detail/ASTContext.h>
 
 namespace pddl
 {
@@ -11,12 +12,11 @@ namespace detail
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ConstantDeclaration
+// Object
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void parseAndAddConstantDeclarations(Context &context, ast::Domain &domain);
-void parseAndAddConstantDeclarations(Context &context, ast::Problem &problem);
+std::experimental::optional<ast::ObjectPointer> parseObject(Context &context, ASTContext &astContext);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

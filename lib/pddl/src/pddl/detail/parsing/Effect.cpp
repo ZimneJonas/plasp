@@ -73,6 +73,11 @@ std::experimental::optional<ast::Effect> parseEffectBody(Context &context, ASTCo
 	std::experimental::optional<ast::Effect> effect;
 
 	if ((effect = parseNot<ast::AtomicFormula>(context, astContext, variableStack, parseAtomicFormula))
+		/*|| (effect = parseAssign(context, astContext, variableStack))
+		|| (effect = parseScaleUp(context, astContext, variableStack))
+		|| (effect = parseScaleDown(context, astContext, variableStack))
+		|| (effect = parseIncrease(context, astContext, variableStack))
+		|| (effect = parseDecrease(context, astContext, variableStack))*/
 		|| (effect = parseAtomicFormula(context, astContext, variableStack)))
 	{
 		return std::move(effect.value());

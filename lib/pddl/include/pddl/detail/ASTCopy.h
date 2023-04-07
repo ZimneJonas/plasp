@@ -19,7 +19,7 @@ namespace ast
 // Primitives
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline Constant deepCopy(Constant &other);
+inline Object deepCopy(Object &other);
 inline PrimitiveType deepCopy(PrimitiveType &other);
 inline Variable deepCopy(Variable &other);
 
@@ -60,9 +60,9 @@ std::unique_ptr<T> deepCopy(std::unique_ptr<T> &other);
 // Primitives
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Constant deepCopy(Constant &other)
+Object deepCopy(Object &other)
 {
-	return Constant(other.declaration);
+	return Object(other.declaration);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

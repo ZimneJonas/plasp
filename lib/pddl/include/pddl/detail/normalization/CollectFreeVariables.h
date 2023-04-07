@@ -27,7 +27,7 @@ void collectFreeVariables(const Variant &variant, std::vector<normalizedAST::Var
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline void collectFreeVariables(const ast::ConstantPointer &, std::vector<normalizedAST::VariableDeclaration *> &, VariableStack &)
+inline void collectFreeVariables(const ast::ObjectPointer &, std::vector<normalizedAST::VariableDeclaration *> &, VariableStack &)
 {
 }
 

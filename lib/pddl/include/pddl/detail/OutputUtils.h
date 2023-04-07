@@ -73,14 +73,14 @@ inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const Ty
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct Constant
+struct Object
 {
-	Constant(const char *name)
+	Object(const char *name)
 	:	name{name}
 	{
 	}
 
-	Constant(const std::string &name)
+	Object(const std::string &name)
 	:	name{name.c_str()}
 	{
 	}
@@ -90,11 +90,11 @@ struct Constant
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const Constant &constant)
+inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const Object &object)
 {
 	return (stream
 		<< colorlog::Format({colorlog::Color::Yellow, colorlog::FontWeight::Normal})
-		<< constant.name << colorlog::ResetFormat());
+		<< object.name << colorlog::ResetFormat());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

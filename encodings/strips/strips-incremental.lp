@@ -1,4 +1,4 @@
-% Constant '_parallel' to enable parallel actions
+% Object '_parallel' to enable parallel actions
 % - value '0': parallel actions *without* checking for mutual disablement
 % - value '1': "forall" parallel actions that can be arranged in any sequence
 % - value '2': "exists" parallel actions that can be arranged in some sequence
@@ -8,19 +8,19 @@
 
 #const _parallel = 5.
 
-% Constant '_shallow' to cheaply approximate mutually disabling parallel actions
+% Object '_shallow' to cheaply approximate mutually disabling parallel actions
 % - value '0': detect incompatible pre/postconditions to reduce parallel actions
 % - otherwise: over-approximate parallel actions (in testing mutual disablement)
 
 #const _shallow = 0.
 
-% Constant '_inertia' to choose flat or tiered format for transition constraints
+% Object '_inertia' to choose flat or tiered format for transition constraints
 % - value '0': use flat rules (integrity constraints) for transition constraints
 % - otherwise: use rules that provide auxiliary atoms for transition constraints
 
 #const _inertia = 0.
 
-% Constant 'planner_on' to enable encoding support for ASP-based planner
+% Object 'planner_on' to enable encoding support for ASP-based planner
 % - value '0': no compatibility to ASP-based planner (no idle steps permitted)
 % - otherwise: compatibility to ASP-based planner (idle steps permitted)
 

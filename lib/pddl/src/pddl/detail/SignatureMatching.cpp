@@ -98,7 +98,7 @@ bool matches(const ast::VariableDeclaration &lhs, const std::experimental::optio
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool matches(const ast::ConstantDeclaration &lhs, const std::experimental::optional<ast::Type> &rhs)
+bool matches(const ast::ObjectDeclaration &lhs, const std::experimental::optional<ast::Type> &rhs)
 {
 	if (!lhs.type && !rhs)
 		return true;

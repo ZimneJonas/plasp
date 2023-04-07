@@ -2,7 +2,7 @@
 
 #include <pddl/Exception.h>
 #include <pddl/detail/Requirements.h>
-#include <pddl/detail/parsing/ConstantDeclaration.h>
+#include <pddl/detail/parsing/ObjectDeclaration.h>
 #include <pddl/detail/parsing/InitialState.h>
 #include <pddl/detail/parsing/Precondition.h>
 #include <pddl/detail/parsing/Requirement.h>
@@ -244,8 +244,8 @@ void ProblemParser::parseObjectSection(ast::Problem &problem)
 	tokenizer.expect<std::string>(":");
 	tokenizer.expect<std::string>("objects");
 
-	// Store constants
-	parseAndAddConstantDeclarations(m_context, problem);
+	// Store objects
+	parseAndAddObjectDeclarations(m_context, problem);
 
 	tokenizer.expect<std::string>(")");
 }

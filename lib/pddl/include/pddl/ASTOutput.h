@@ -23,8 +23,8 @@ namespace ast
 // Forward declarations
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Constant &constant, pddl::detail::PrintContext &printContext);
-inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const ConstantDeclaration &constantDeclaration, pddl::detail::PrintContext &printContext);
+inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Object &object, pddl::detail::PrintContext &printContext);
+inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const ObjectDeclaration &objectDeclaration, pddl::detail::PrintContext &printContext);
 inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const PrimitiveType &primitiveType, pddl::detail::PrintContext &printContext);
 inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const PrimitiveTypeDeclaration &primitiveTypeDeclaration, pddl::detail::PrintContext &printContext);
 inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Variable &variable, pddl::detail::PrintContext &printContext);
@@ -62,21 +62,21 @@ inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Variant
 // Primitives
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Constant &constant, pddl::detail::PrintContext &)
+inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Object &object, pddl::detail::PrintContext &)
 {
-	return stream << pddl::detail::Constant(constant.declaration->name);
+	return stream << pddl::detail::Object(object.declaration->name);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const ConstantDeclaration &constantDeclaration, pddl::detail::PrintContext &printContext)
+inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const ObjectDeclaration &objectDeclaration, pddl::detail::PrintContext &printContext)
 {
-	stream << pddl::detail::Constant(constantDeclaration.name);
+	stream << pddl::detail::Object(objectDeclaration.name);
 
-	if (constantDeclaration.type)
+	if (objectDeclaration.type)
 	{
 		stream << " - ";
-		print(stream, constantDeclaration.type.value(), printContext);
+		print(stream, objectDeclaration.type.value(), printContext);
 	}
 
 	return stream;
@@ -415,15 +415,15 @@ inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Domain 
 		printContext.indentationLevel--;
 	}
 
-	if (!domain.constants.empty())
+	if (!domain.objects.empty())
 	{
 		pddl::detail::printIndentedNewline(stream, printContext);
-		stream << "(" << colorlog::Keyword(":constants");
+		stream << "(" << colorlog::Keyword(":objects");
 
 		printContext.indentationLevel++;
 
 		pddl::detail::printIndentedNewline(stream, printContext);
-		print(stream, domain.constants, printContext);
+		print(stream, domain.objects, printContext);
 		stream << ")";
 
 		printContext.indentationLevel--;

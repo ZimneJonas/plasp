@@ -24,7 +24,7 @@ TEST_CASE("[parser correctness] The official PDDL instances are parsed correctly
 		auto description = pddl::parseDescription(context);
 
 		CHECK(description.domain->name == "blocks");
-		CHECK(description.domain->constants.empty());
+		CHECK(description.domain->objects.empty());
 
 		const auto &types = description.domain->types;
 
@@ -146,13 +146,13 @@ TEST_CASE("[parser correctness] The official PDDL instances are parsed correctly
 		const auto &fact0 = facts[0].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>();
 		// TODO: check declaration once implemented
 		REQUIRE(fact0->arguments.size() == 1);
-		CHECK(fact0->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->name == "c");
-		CHECK(fact0->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(fact0->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->name == "c");
+		CHECK(fact0->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
 		const auto &fact5 = facts[5].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>();
 		// TODO: check declaration once implemented
 		REQUIRE(fact5->arguments.size() == 1);
-		CHECK(fact5->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->name == "a");
-		CHECK(fact5->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(fact5->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->name == "a");
+		CHECK(fact5->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
 		const auto &fact8 = facts[8].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>();
 		// TODO: check declaration once implemented
 		REQUIRE(fact8->arguments.empty());
@@ -166,24 +166,24 @@ TEST_CASE("[parser correctness] The official PDDL instances are parsed correctly
 		const auto &goal0 = goalAnd->arguments[0].get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>();
 		// TODO: check declaration once implemented
 		REQUIRE(goal0->arguments.size() == 2);
-		CHECK(goal0->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->name == "d");
-		CHECK(goal0->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
-		CHECK(goal0->arguments[1].get<pddl::ast::ConstantPointer>()->declaration->name == "c");
-		CHECK(goal0->arguments[1].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(goal0->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->name == "d");
+		CHECK(goal0->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(goal0->arguments[1].get<pddl::ast::ObjectPointer>()->declaration->name == "c");
+		CHECK(goal0->arguments[1].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
 		const auto &goal1 = goalAnd->arguments[1].get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>();
 		// TODO: check declaration once implemented
 		REQUIRE(goal0->arguments.size() == 2);
-		CHECK(goal1->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->name == "c");
-		CHECK(goal1->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
-		CHECK(goal1->arguments[1].get<pddl::ast::ConstantPointer>()->declaration->name == "b");
-		CHECK(goal1->arguments[1].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(goal1->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->name == "c");
+		CHECK(goal1->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(goal1->arguments[1].get<pddl::ast::ObjectPointer>()->declaration->name == "b");
+		CHECK(goal1->arguments[1].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
 		const auto &goal2 = goalAnd->arguments[2].get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>();
 		// TODO: check declaration once implemented
 		REQUIRE(goal0->arguments.size() == 2);
-		CHECK(goal2->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->name == "b");
-		CHECK(goal2->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
-		CHECK(goal2->arguments[1].get<pddl::ast::ConstantPointer>()->declaration->name == "a");
-		CHECK(goal2->arguments[1].get<pddl::ast::ConstantPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(goal2->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->name == "b");
+		CHECK(goal2->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
+		CHECK(goal2->arguments[1].get<pddl::ast::ObjectPointer>()->declaration->name == "a");
+		CHECK(goal2->arguments[1].get<pddl::ast::ObjectPointer>()->declaration->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration == typeBlock.get());
 	}
 
 	SECTION("“either” type in zenotravel domain")
@@ -208,7 +208,7 @@ TEST_CASE("[parser correctness] The official PDDL instances are parsed correctly
 		CHECK(predicates[0]->parameters[1]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "city");
 	}
 
-	SECTION("typed constants in schedule domain")
+	SECTION("typed objects in schedule domain")
 	{
 		context.mode = pddl::Mode::Compatibility;
 
@@ -216,25 +216,25 @@ TEST_CASE("[parser correctness] The official PDDL instances are parsed correctly
 		context.tokenizer.read(domainFile);
 		auto description = pddl::parseDescription(context);
 
-		const auto &constants = description.domain->constants;
+		const auto &objects = description.domain->objects;
 
-		REQUIRE(constants.size() == 14);
-		CHECK(constants[0]->name == "cold");
-		CHECK(constants[0]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "temperature");
-		CHECK(constants[1]->name == "hot");
-		CHECK(constants[1]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "temperature");
-		CHECK(constants[2]->name == "cylindrical");
-		CHECK(constants[2]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "ashape");
-		CHECK(constants[3]->name == "polisher");
-		CHECK(constants[3]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "machine");
-		CHECK(constants[4]->name == "roller");
-		CHECK(constants[4]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "machine");
-		CHECK(constants[10]->name == "immersion-painter");
-		CHECK(constants[10]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "machine");
-		CHECK(constants[11]->name == "polished");
-		CHECK(constants[11]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "surface");
-		CHECK(constants[13]->name == "smooth");
-		CHECK(constants[13]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "surface");
+		REQUIRE(objects.size() == 14);
+		CHECK(objects[0]->name == "cold");
+		CHECK(objects[0]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "temperature");
+		CHECK(objects[1]->name == "hot");
+		CHECK(objects[1]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "temperature");
+		CHECK(objects[2]->name == "cylindrical");
+		CHECK(objects[2]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "ashape");
+		CHECK(objects[3]->name == "polisher");
+		CHECK(objects[3]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "machine");
+		CHECK(objects[4]->name == "roller");
+		CHECK(objects[4]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "machine");
+		CHECK(objects[10]->name == "immersion-painter");
+		CHECK(objects[10]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "machine");
+		CHECK(objects[11]->name == "polished");
+		CHECK(objects[11]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "surface");
+		CHECK(objects[13]->name == "smooth");
+		CHECK(objects[13]->type.value().get<pddl::ast::PrimitiveTypePointer>()->declaration->name == "surface");
 	}
 
 	SECTION("type inheritance in logistics domain")
@@ -351,7 +351,7 @@ TEST_CASE("[parser correctness] The official PDDL instances are parsed correctly
 		CHECK(actions[1]->name == "do-roll");
 		const auto &effectAnd = actions[1]->effect.value().get<pddl::ast::AndPointer<pddl::ast::Effect>>();
 		REQUIRE(effectAnd->arguments.size() == 10);
-		CHECK(effectAnd->arguments[0].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>()->arguments[0].get<pddl::ast::ConstantPointer>()->declaration->name == "roller");
+		CHECK(effectAnd->arguments[0].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().get<pddl::ast::PredicatePointer>()->arguments[0].get<pddl::ast::ObjectPointer>()->declaration->name == "roller");
 		CHECK(effectAnd->arguments[1].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().is<pddl::ast::PredicatePointer>());
 		CHECK(effectAnd->arguments[2].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().is<pddl::ast::PredicatePointer>());
 		CHECK(effectAnd->arguments[3].get<pddl::ast::Literal>().get<pddl::ast::AtomicFormula>().is<pddl::ast::PredicatePointer>());

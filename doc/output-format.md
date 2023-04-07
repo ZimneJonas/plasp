@@ -5,7 +5,7 @@
 ## Overview
 
 Essentially, `plasp`’s output format consists of [state variables](#variables) that are modified by [actions](#actions) if their preconditions are fulfilled.
-Variables reference [entities](#constants-objects) that are affected by the actions.
+Variables reference [entities](#objects-objects) that are affected by the actions.
 As with PDDL, the objective is to achieve a specific [goal](#goal) starting from an [initial state](#initial-state) by executing a sequence of actions.
 
 `plasp`’s variables correspond to the multivalued variables in SAS.
@@ -48,9 +48,9 @@ This is translated by `plasp translate` into the following output format (slight
 % declares the type “type("switch")”
 type(type("switch")).
 
-% introduces a switch “constant("a")”
-constant(constant("a")).
-has(constant("a"), type("switch")).
+% introduces a switch “object("a")”
+object(object("a")).
+has(object("a"), type("switch")).
 
 % declares a variable “variable(on(X))” for switches X
 variable(variable(("on", X))) :- has(X, type("switch")).
@@ -68,10 +68,10 @@ postcondition(action(("turn-on", X)), effect(unconditional), variable(("on", X))
     :- action(action(("turn-on", X))).
 
 % initially, the switch is off
-initialState(variable(("on", constant("a"))), value(variable(("on", constant("a"))), false)).
+initialState(variable(("on", object("a"))), value(variable(("on", object("a"))), false)).
 
 % in the end, the switch should be on
-goal(variable(("on", constant("a"))), value(variable(("on", constant("a"))), true)).
+goal(variable(("on", object("a"))), value(variable(("on", object("a"))), true)).
 ```
 
 ## Syntax and Semantics
@@ -99,11 +99,11 @@ type(type(<name>)).
 % specifies that <type 1> inherits <type 2>
 inherits(<type 1>, <type 2>).
 
-% specifies <constant> to have type <type>
-has(<constant>, <type>).
+% specifies <object> to have type <type>
+has(<object>, <type>).
 ```
 
-[Variables](#variables), [constants](#constants-objects), and [objects](#constants-objects) may be typed. Types are only available with PDDL and if typing is enabled.
+[Variables](#variables), [objects](#objects-objects), and [objects](#objects-objects) may be typed. Types are only available with PDDL and if typing is enabled.
 
 `plasp` automatically generates all matching `has` predicates for objects with types that inherit other types.
 
@@ -118,7 +118,7 @@ contains(<variable>, <value>).
 ```
 
 `plasp`’s variables represent the current state of the planning problem.
-Variables are linked to the problem's [objects](#constants-objects) and [constants](#constants-objects).
+Variables are linked to the problem's [objects](#objects-objects) and [objects](#objects-objects).
 
 `plasp`’s variables are multivalued, and each variable has exactly one value at each point in time.
 
@@ -212,20 +212,20 @@ The effect of all derived predicates is to set the corresponding [derived variab
 In contrast to actions, however, derived predicates specify whether their preconditions are to be interpreted as a *conjunction* (`type(and)`) or as a *disjunction* (`type(or)`).
 Encoding authors need to ensure that derived predicate preconditions are interpreted in the correct way.
 
-### Constants/Objects
+### Objects/Objects
 
 ```prolog
-% declares a <constant> or object
-constant(constant(<name>)).
+% declares a <object> or object
+object(object(<name>)).
 
-% specifies <constant> to have type type(<name>)
-has(<constant>, <type>).
+% specifies <object> to have type type(<name>)
+has(<object>, <type>).
 ```
 
-Constants and objects are the entities that are affected by [actions](#actions), for instance, the blocks in a Blocks World problem.
-Constants are global for a domain, while objects are problem-specific.
+Objects and objects are the entities that are affected by [actions](#actions), for instance, the blocks in a Blocks World problem.
+Objects are global for a domain, while objects are problem-specific.
 
-`plasp` does not distinguish between the two (modeling both as constants), as both are identically used static identifiers.
+`plasp` does not distinguish between the two (modeling both as objects), as both are identically used static identifiers.
 
 ### Initial State
 

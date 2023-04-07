@@ -205,15 +205,15 @@ inline colorlog::ColorStream &print(colorlog::ColorStream &stream, const Domain 
 		printContext.indentationLevel--;
 	}
 
-	if (!domain.constants.empty())
+	if (!domain.objects.empty())
 	{
 		printIndentedNewline(stream, printContext);
-		stream << "(" << colorlog::Keyword(":constants");
+		stream << "(" << colorlog::Keyword(":objects");
 
 		printContext.indentationLevel++;
 
 		printIndentedNewline(stream, printContext);
-		print(stream, domain.constants, printContext);
+		print(stream, domain.objects, printContext);
 		stream << ")";
 
 		printContext.indentationLevel--;

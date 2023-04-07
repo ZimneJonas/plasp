@@ -19,11 +19,11 @@ namespace normalizedAST
 // Primitives
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-using ast::Constant;
-using ast::ConstantPointer;
-using ast::ConstantDeclaration;
-using ast::ConstantDeclarationPointer;
-using ast::ConstantDeclarations;
+using ast::Object;
+using ast::ObjectPointer;
+using ast::ObjectDeclaration;
+using ast::ObjectDeclarationPointer;
+using ast::ObjectDeclarations;
 using ast::PrimitiveTypePointer;
 using ast::PrimitiveType;
 using ast::PrimitiveTypePointer;
@@ -54,7 +54,9 @@ using ast::Predicates;
 using ast::PredicateDeclaration;
 using ast::PredicateDeclarationPointer;
 using ast::PredicateDeclarations;
-
+/*using ast::Function;
+using ast::FunctionPointer;
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Expressions
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +77,25 @@ using ast::Or;
 using ast::OrPointer;
 using ast::When;
 using ast::WhenPointer;
-
+/*//Numerical comparisons
+using ast::Greater;
+using ast::GreaterPointer;
+using ast::GreaterEquals;
+using ast::GreaterEqualsPointer;
+using ast::Smaller;
+using ast::SmallerPointer;
+using ast::SmallerEquals;
+using ast::SmallerEqualsPointer;
+// Numerical Operators
+using ast::Add;
+using ast::AddPointer;
+using ast::Subtract;
+using ast::SubtractPointer;
+using ast::Multiply;
+using ast::MultiplyPointer;
+using ast::Divide;
+using ast::DividePointer;
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // PDDL Structure
 ////////////////////////////////////////////////////////////////////////////////////////////////////

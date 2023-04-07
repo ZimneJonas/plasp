@@ -1,7 +1,7 @@
 #include <pddl/detail/parsing/Term.h>
 
 #include <pddl/Exception.h>
-#include <pddl/detail/parsing/Constant.h>
+#include <pddl/detail/parsing/Object.h>
 #include <pddl/detail/parsing/Variable.h>
 
 namespace pddl
@@ -24,7 +24,7 @@ std::experimental::optional<ast::Term> parseTerm(Context &context, ASTContext &a
 	std::experimental::optional<ast::Term> term;
 
 	if ((term = parseVariable(context, variableStack))
-	    || (term = parseConstant(context, astContext)))
+	    || (term = parseObject(context, astContext)))
 	{
 		return std::move(term.value());
 	}

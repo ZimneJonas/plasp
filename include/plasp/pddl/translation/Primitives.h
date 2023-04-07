@@ -18,20 +18,20 @@ namespace pddl
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const ::pddl::normalizedAST::ConstantDeclaration &constantDeclaration)
+inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const ::pddl::normalizedAST::ObjectDeclaration &objectDeclaration)
 {
-	assert(!constantDeclaration.name.empty());
+	assert(!objectDeclaration.name.empty());
 
-	return (stream << colorlog::String(constantDeclaration.name.c_str()));
+	return (stream << colorlog::String(objectDeclaration.name.c_str()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const ::pddl::normalizedAST::Constant &constant)
+inline colorlog::ColorStream &operator<<(colorlog::ColorStream &stream, const ::pddl::normalizedAST::Object &object)
 {
-	assert(constant.declaration != nullptr);
+	assert(object.declaration != nullptr);
 
-	return (stream << *constant.declaration);
+	return (stream << *object.declaration);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

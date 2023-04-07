@@ -62,12 +62,7 @@ std::experimental::optional<ast::Precondition> parsePreconditionBody(Context &co
 
 	const auto expressionIdentifierPosition = tokenizer.position();
 
-	if (tokenizer.testIdentifierAndReturn("-")
-		|| tokenizer.testIdentifierAndReturn("*")
-		|| tokenizer.testIdentifierAndReturn("+")
-		|| tokenizer.testIdentifierAndReturn("-")
-		|| tokenizer.testIdentifierAndReturn("/")
-		|| tokenizer.testIdentifierAndReturn(">")
+	if (   tokenizer.testIdentifierAndReturn(">")
 		|| tokenizer.testIdentifierAndReturn("<")
 		|| tokenizer.testIdentifierAndReturn(">=")
 		|| tokenizer.testIdentifierAndReturn("<="))
@@ -86,6 +81,10 @@ std::experimental::optional<ast::Precondition> parsePreconditionBody(Context &co
 	    || (precondition = parseForAll<ast::Precondition>(context, astContext, variableStack, parsePrecondition))
 		|| (precondition = parseNot<ast::Precondition>(context, astContext, variableStack, parsePrecondition))
 	    || (precondition = parseImply<ast::Precondition>(context, astContext, variableStack, parsePrecondition))
+		/*|| (precondition = parseGreater<ast::Precondition>(context, astContext, variableStack, parsePrecondition))
+		|| (precondition = parseSmaller<ast::Precondition>(context, astContext, variableStack, parsePrecondition))
+		|| (precondition = parseGreaterEquals<ast::Precondition>(context, astContext, variableStack, parsePrecondition))
+		|| (precondition = parseSmallerEquals<ast::Precondition>(context, astContext, variableStack, parsePrecondition))*/
 	    || (precondition = parseAtomicFormula(context, astContext, variableStack)))
 	{
 		return std::move(precondition.value());

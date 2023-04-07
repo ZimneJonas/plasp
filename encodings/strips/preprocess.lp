@@ -1,4 +1,4 @@
-% Constant '_closure' to (de)activate analysis of potentially relevant actions
+% Object '_closure' to (de)activate analysis of potentially relevant actions
 % - value '1': forward chaining of effects w.r.t. initial variable values
 % - value '2': backward regression of effects w.r.t. goal variable values
 % - value '3': both forward chaining and backward regression of effects

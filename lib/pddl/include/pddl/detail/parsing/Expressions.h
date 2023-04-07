@@ -39,6 +39,26 @@ template<typename Argument, typename ArgumentParser>
 std::experimental::optional<ast::OrPointer<Argument>> parseOr(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
 template<typename ArgumentLeft, typename ArgumentRight, typename ArgumentLeftParser, typename ArgumentRightParser>
 std::experimental::optional<ast::WhenPointer<ArgumentLeft, ArgumentRight>> parseWhen(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentLeftParser parseArgumentLeft, ArgumentRightParser parseArgumentRight);
+/*//Numerical comparison
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::GreaterPointer<Argument>> parseGreater(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::GreaterEqualsPointer<Argument>> parseGreaterEquals(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::SmallerPointer<Argument>> parseSmaller(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::SmallerEqualsPointer<Argument>> parseSmallerEquals(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::AddPointer<Argument>> parseAdd(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::SubtractPointer<Argument>> parseSubtract(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::MultiplyPointer<Argument>> parseMultiply(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::DividePointer<Argument>> parseDivide(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument);
+*/
+//Numerical Operators
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Expressions: Base Classes
@@ -254,8 +274,82 @@ std::experimental::optional<ast::WhenPointer<ArgumentLeft, ArgumentRight>> parse
 	return parseBinary<ast::When<ArgumentLeft, ArgumentRight>, ArgumentLeftParser, ArgumentRightParser>(context, astContext, variableStack, parseArgumentLeft, parseArgumentRight);
 }
 
+/*
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///	Comparisions
+///	@brief returns the result of parseBinary. But if they are not of the e.g. ast::Greater type it returns NULL instead
+///
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::GreaterPointer<Argument>> parseGreater(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::Greater<ArgumentLeft, ArgumentRight>, ArgumentLeftParser, ArgumentRightParser>(context, astContext, variableStack, parseArgumentLeft, parseArgumentRight);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::GreaterEqualsPointer<Argument>> parseGreaterEquals(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::GreaterEquals<ArgumentLeft, ArgumentRight>, ArgumentLeftParser, ArgumentRightParser>(context, astContext, variableStack, parseArgumentLeft, parseArgumentRight);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::SmallerPointer<Argument>> parseSmaller(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::Smaller<ArgumentLeft, ArgumentRight>, ArgumentLeftParser, ArgumentRightParser>(context, astContext, variableStack, parseArgumentLeft, parseArgumentRight);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::SmallerEqualsPointer<Argument>> parseSmallerEquals(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument )
+{
+	return parseBinary<ast::SmallerEquals<ArgumentLeft, ArgumentRight>, ArgumentLeftParser, ArgumentRightParser>(context, astContext, variableStack, parseArgumentLeft, parseArgumentRight);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+///
+///	Numeric Operators
+///
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::AddPointer<Argument>> parseAdd(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::Add<Argument>, ArgumentParser, ArgumentParser>(context, astContext, variableStack, parseArgument, parseArgument);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::SubtractPointer<Argument>> parseSubtract(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::Subtract<Argument>, ArgumentParser, ArgumentParser>(context, astContext, variableStack, parseArgument, parseArgument);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::DividePointer<Argument>> parseDivide(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::Divide<Argument>, ArgumentParser, ArgumentParser>(context, astContext, variableStack, parseArgument, parseArgument);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+template<typename Argument, typename ArgumentParser>
+std::experimental::optional<ast::MultiplyPointer<Argument>> parseMultiply(Context &context, ASTContext &astContext, VariableStack &variableStack, ArgumentParser parseArgument)
+{
+	return parseBinary<ast::Multiply<Argument>, ArgumentParser, ArgumentParser>(context, astContext, variableStack, parseArgument, parseArgument);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
 }
 }
 

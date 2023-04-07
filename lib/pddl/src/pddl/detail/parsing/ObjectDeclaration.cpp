@@ -1,4 +1,4 @@
-#include <pddl/detail/parsing/ConstantDeclaration.h>
+#include <pddl/detail/parsing/ObjectDeclaration.h>
 
 #include <pddl/AST.h>
 #include <pddl/Exception.h>
@@ -12,33 +12,33 @@ namespace detail
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ConstantDeclaration
+// ObjectDeclaration
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void parseAndAddUntypedConstantDeclaration(Context &context, ast::ConstantDeclarations &constantDeclarations)
+void parseAndAddUntypedObjectDeclaration(Context &context, ast::ObjectDeclarations &objectDeclarations)
 {
 	auto &tokenizer = context.tokenizer;
 
-	auto constantName = tokenizer.getIdentifier();
-	assert(constantName != "-");
+	auto objectName = tokenizer.getIdentifier();
+	assert(objectName != "-");
 
-	constantDeclarations.emplace_back(std::make_unique<ast::ConstantDeclaration>(std::move(constantName)));
+	objectDeclarations.emplace_back(std::make_unique<ast::ObjectDeclaration>(std::move(objectName)));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void parseAndAddConstantDeclarations(Context &context, ast::Domain &domain, ast::ConstantDeclarations &constantDeclarations)
+void parseAndAddObjectDeclarations(Context &context, ast::Domain &domain, ast::ObjectDeclarations &objectDeclarations)
 {
 	auto &tokenizer = context.tokenizer;
 	tokenizer.skipWhiteSpace();
 
 	// Index on the first element of the current inheritance list
-	size_t inheritanceIndex = constantDeclarations.size();
+	size_t inheritanceIndex = objectDeclarations.size();
 
 	while (tokenizer.currentCharacter() != ')')
 	{
-		parseAndAddUntypedConstantDeclaration(context, constantDeclarations);
+		parseAndAddUntypedObjectDeclaration(context, objectDeclarations);
 
 		tokenizer.skipWhiteSpace();
 
@@ -48,33 +48,33 @@ void parseAndAddConstantDeclarations(Context &context, ast::Domain &domain, ast:
 		// If existing, parse and store parent type
 		auto parentType = parsePrimitiveType(context, domain);
 
-		for (size_t i = inheritanceIndex; i < constantDeclarations.size(); i++)
-			constantDeclarations[i]->type = ast::deepCopy(parentType);
+		for (size_t i = inheritanceIndex; i < objectDeclarations.size(); i++)
+			objectDeclarations[i]->type = ast::deepCopy(parentType);
 
 		// All types up to now are labeled with their parent types
-		inheritanceIndex = constantDeclarations.size();
+		inheritanceIndex = objectDeclarations.size();
 
 		tokenizer.skipWhiteSpace();
 	}
 
 	const bool isTypingUsed = !domain.types.empty();
 
-	if (isTypingUsed && !constantDeclarations.empty() && !constantDeclarations.back()->type)
-		throw ParserException(tokenizer.location(), "missing type declaration for constant “" + constantDeclarations.back()->name + "”");
+	if (isTypingUsed && !objectDeclarations.empty() && !objectDeclarations.back()->type)
+		throw ParserException(tokenizer.location(), "missing type declaration for object “" + objectDeclarations.back()->name + "”");
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void parseAndAddConstantDeclarations(Context &context, ast::Domain &domain)
+void parseAndAddObjectDeclarations(Context &context, ast::Domain &domain)
 {
-	parseAndAddConstantDeclarations(context, domain, domain.constants);
+	parseAndAddObjectDeclarations(context, domain, domain.objects);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void parseAndAddConstantDeclarations(Context &context, ast::Problem &problem)
+void parseAndAddObjectDeclarations(Context &context, ast::Problem &problem)
 {
-	parseAndAddConstantDeclarations(context, *problem.domain, problem.objects);
+	parseAndAddObjectDeclarations(context, *problem.domain, problem.objects);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

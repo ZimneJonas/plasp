@@ -1,4 +1,4 @@
-#include <pddl/detail/parsing/PredicateDeclaration.h>
+//#include <pddl/detail/parsing/FunctionsDeclartion.h>
 
 #include <pddl/Exception.h>
 #include <pddl/detail/ASTContext.h>
@@ -11,13 +11,16 @@ namespace detail
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// PredicateDeclaration
+// Functions
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
- * @brief   Constructs a new PredicateDeclaration object.	
- */
-void parseAndAddPredicateDeclaration(Context &context, ast::Domain &domain)
+ * @brief   parse&add singe imput e.g. (hear_counter ?t - thing)
+ */ 
+
+
+void parseAndAddFunctionDeclaration(Context &context, ast::Domain &domain)
 {
 	auto &tokenizer = context.tokenizer;
 	tokenizer.expect<std::string>("(");
@@ -30,32 +33,31 @@ void parseAndAddPredicateDeclaration(Context &context, ast::Domain &domain)
 
 	tokenizer.expect<std::string>(")");
 
-	domain.predicates.emplace_back(std::make_unique<ast::PredicateDeclaration>(std::move(name), std::move(parameters)));
+	domain.functions.emplace_back(std::make_unique<ast::PredicateDeclaration>(std::move(name), std::move(parameters)));
+	//domain.functions.emplace_back(std::make_unique<ast::Function>(std::move(name), std::move(parameters)));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/**
- * @brief	parses imput e.g.:
- * 				predicates
- * 					(can_hear ?t - thing)
- * 					(on ?x - obj))
+/** 
+ * @brief   parse&add all function in context
+ * @param context		part of filedata with Functions
+ * @param domain    	translated domain
  */
-void parseAndAddPredicateDeclarations(Context &context, ast::Domain &domain)
+
+void parseAndAddFunctionDeclarations(Context &context, ast::Domain &domain)
 {
 	auto &tokenizer = context.tokenizer;
 	tokenizer.skipWhiteSpace();
 
 	while (tokenizer.currentCharacter() != ')')
 	{	
-		// parse&add singe imput e.g. (can_hear ?t - thing)
-		parseAndAddPredicateDeclaration(context, domain);
+		parseAndAddFunctionDeclaration(context, domain);
 
 		tokenizer.skipWhiteSpace();
 	}
 }
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 }
 }

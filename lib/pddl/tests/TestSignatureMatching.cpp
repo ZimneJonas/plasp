@@ -139,7 +139,7 @@ TEST_CASE("[signature matching] Predicate signatures are matched correctly", "[s
 		CHECK_NOTHROW(pddl::parseDescription(context));
 	}
 
-	SECTION("constants compatible with “either” type via multiple inheritance")
+	SECTION("objects compatible with “either” type via multiple inheritance")
 	{
 		input
 			<< "(:action test :precondition (p3 cbx cb1 cb3)))";

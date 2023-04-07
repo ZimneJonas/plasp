@@ -20,7 +20,13 @@ std::experimental::optional<ast::AtomicFormula> parseAtomicFormula(Context &cont
 {
 	std::experimental::optional<ast::AtomicFormula> atomicFormula;
 
-	if ((atomicFormula = parseEquals<ast::Term, ast::Term>(context, astContext, variableStack, parseTerm, parseTerm)))
+	if ((atomicFormula = parseEquals<ast::Term, ast::Term>(context, astContext, variableStack, parseTerm, parseTerm))
+	
+		/*||	(atomicFormula = parseGreater<ast::Term, ast::Term>(context, astContext, variableStack, parseTerm, parseTerm))
+		||	(atomicFormula = parseSmaller<ast::Term, ast::Term>(context, astContext, variableStack, parseTerm, parseTerm))
+		||	(atomicFormula = parseGreaterEquals<ast::Term, ast::Term>(context, astContext, variableStack, parseTerm, parseTerm))
+		||	(atomicFormula = parseSmallerEquals<ast::Term, ast::Term>(context, astContext, variableStack, parseTerm, parseTerm))*/
+	)
 		return std::move(atomicFormula.value());
 
 	return parsePredicate(context, astContext, variableStack);

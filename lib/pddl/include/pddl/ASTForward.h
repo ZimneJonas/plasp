@@ -25,11 +25,11 @@ namespace ast
 // Primitives
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct Constant;
-using ConstantPointer = std::unique_ptr<Constant>;
-struct ConstantDeclaration;
-using ConstantDeclarationPointer = std::unique_ptr<ConstantDeclaration>;
-using ConstantDeclarations = std::vector<ConstantDeclarationPointer>;
+struct Object;
+using ObjectPointer = std::unique_ptr<Object>;
+struct ObjectDeclaration;
+using ObjectDeclarationPointer = std::unique_ptr<ObjectDeclaration>;
+using ObjectDeclarations = std::vector<ObjectDeclarationPointer>;
 struct PrimitiveType;
 using PrimitiveTypePointer = std::unique_ptr<PrimitiveType>;
 using PrimitiveTypes = std::vector<PrimitiveTypePointer>;
@@ -53,6 +53,9 @@ using Predicates = std::vector<PredicatePointer>;
 struct PredicateDeclaration;
 using PredicateDeclarationPointer = std::unique_ptr<PredicateDeclaration>;
 using PredicateDeclarations = std::vector<PredicateDeclarationPointer>;
+/*struct Function;
+using FunctionPointer = std::unique_ptr<Function>;
+using Functions = std::vector<FunctionPointer>;*/
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Expressions
@@ -98,7 +101,62 @@ template<class ArgumentLeft, class ArgumentRight>
 struct When;
 template<class ArgumentLeft, class ArgumentRight>
 using WhenPointer = std::unique_ptr<When<ArgumentLeft, ArgumentRight>>;
-
+/*
+/// Numerical Comperisons
+template<class ArgumentLeft, class ArgumentRight>
+struct Greater;
+template<class ArgumentLeft, class ArgumentRight>
+using GreaterPointer = std::unique_ptr<Greater<ArgumentLeft, ArgumentRight>>;
+template<class ArgumentLeft, class ArgumentRight>
+struct GreaterEquals;
+template<class Argument>
+using GreaterEqualsPointer = std::unique_ptr<GreaterEquals<ArgumentLeft, ArgumentRight>>;
+template<class Argument>
+struct Smaller;
+template<class Argument>
+using SmallerPointer = std::unique_ptr<Smaller<ArgumentLeft, ArgumentRight>>;
+template<class Argument>
+struct SmallerEquals;
+template<class Argument>
+using SmallerEqualsPointer = std::unique_ptr<SmallerEquals<ArgumentLeft, ArgumentRight>>;
+// Numerical Operators
+template<class Argument>
+struct Add;
+template<class Argument>
+using AddPointer = std::unique_ptr<Add<Argument>>;
+template<class Argument>
+struct Subtract;
+template<class Argument>
+using SubtractPointer = std::unique_ptr<Subtract<Argument>>;
+template<class Argument>
+struct Multiply;
+template<class Argument>
+using MultiplyPointer = std::unique_ptr<Multiply<Argument>>;
+template<class Argument>
+struct Divide;
+template<class Argument>
+using DividePointer = std::unique_ptr<Divide<Argument>>;
+template<class Argument>
+struct Assign;
+template<class Argument>
+using AssignPointer = std::unique_ptr<Assign<ArgumentLeft, ArgumentRight>>;
+template<class Argument>
+struct Increase;
+template<class Argument>
+using IncreasePointer = std::unique_ptr<Increase<ArgumentLeft, ArgumentRight>>;
+template<class Argument>
+struct Decrease;
+template<class Argument>
+using DecreasePointer = std::unique_ptr<Decrease<ArgumentLeft, ArgumentRight>>;
+template<class Argument>
+struct ScaleUp;
+template<class Argument>
+using ScaleUpPointer = std::unique_ptr<ScaleUp<ArgumentLeft, ArgumentRight>>;
+template<class Argument>
+struct ScaleDown;
+template<class Argument>
+using ScaleDownPointer = std::unique_ptr<ScaleDown<ArgumentLeft, ArgumentRight>>;
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // PDDL Structure
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +181,7 @@ using Requirements = std::vector<Requirement>;
 namespace detail
 {
 using TermT = Variant<
-	ConstantPointer,
+	ObjectPointer,
 	VariablePointer>;
 }
 
@@ -185,6 +243,11 @@ using PreconditionT = Variant<
 	ImplyPointer<Precondition>,
 	NotPointer<Precondition>,
 	OrPointer<Precondition>>;
+/*	GreaterPointer<Term,Term>,
+	GreaterEqualsPointer<Term, Term>,
+	SmallerPointer<Term,Term>,
+	SmallerEqualsPointer<Term,Term>*/
+	
 }
 
 class Precondition : public detail::PreconditionT
@@ -226,6 +289,11 @@ using EffectT = Variant<
 	Literal,
 	AndPointer<Effect>,
 	ForAllPointer<Effect>,
+	/*AssignPointer<Term,Term>,
+	IncreasePointer<Term,Term>,
+	DecreasePointer<Term,Term>,
+	ScaleUpPointer<Term,Term>,
+	ScaleDownPointer<Term,Term>,*/
 	WhenPointer<Precondition, ConditionalEffect>>;
 }
 

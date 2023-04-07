@@ -3,12 +3,13 @@
 #include <pddl/Exception.h>
 #include <pddl/detail/Requirements.h>
 #include <pddl/detail/parsing/Action.h>
-#include <pddl/detail/parsing/ConstantDeclaration.h>
+#include <pddl/detail/parsing/ObjectDeclaration.h>
 #include <pddl/detail/parsing/PredicateDeclaration.h>
 #include <pddl/detail/parsing/PrimitiveTypeDeclaration.h>
 #include <pddl/detail/parsing/Requirement.h>
 #include <pddl/detail/parsing/Unsupported.h>
 #include <pddl/detail/parsing/Utils.h>
+#include <pddl/detail/parsing/FunctionDeclaration.h>
 
 namespace pddl
 {
@@ -25,8 +26,9 @@ DomainParser::DomainParser(Context &context)
 :	m_context{context},
 	m_requirementsPosition{tokenize::InvalidStreamPosition},
 	m_typesPosition{tokenize::InvalidStreamPosition},
-	m_constantsPosition{tokenize::InvalidStreamPosition},
-	m_predicatesPosition{tokenize::InvalidStreamPosition}
+	m_objectsPosition{tokenize::InvalidStreamPosition},
+	m_predicatesPosition{tokenize::InvalidStreamPosition},
+	m_functionsPosition{tokenize::InvalidStreamPosition}
 {
 }
 
@@ -52,16 +54,22 @@ ast::DomainPointer DomainParser::parse()
 		parseTypeSection(*domain);
 	}
 
-	if (m_constantsPosition != tokenize::InvalidStreamPosition)
+	if (m_objectsPosition != tokenize::InvalidStreamPosition)
 	{
-		tokenizer.seek(m_constantsPosition);
-		parseConstantSection(*domain);
+		tokenizer.seek(m_objectsPosition);
+		parseObjectSection(*domain);
 	}
 
 	if (m_predicatesPosition != tokenize::InvalidStreamPosition)
 	{
 		tokenizer.seek(m_predicatesPosition);
 		parsePredicateSection(*domain);
+	}
+
+	if (m_functionsPosition != tokenize::InvalidStreamPosition)
+	{
+		tokenizer.seek(m_functionsPosition);
+		parseFunctionsSection(*domain);
 	}
 
 	for (size_t i = 0; i < m_actionPositions.size(); i++)
@@ -118,8 +126,8 @@ void DomainParser::findSections(ast::Domain &domain)
 			setSectionPosition("requirements", m_requirementsPosition, position, true);
 		else if (tokenizer.testIdentifierAndSkip("types"))
 			setSectionPosition("types", m_typesPosition, position, true);
-		else if (tokenizer.testIdentifierAndSkip("constants"))
-			setSectionPosition("constants", m_constantsPosition, position, true);
+		else if (tokenizer.testIdentifierAndSkip("objects"))
+			setSectionPosition("objects", m_objectsPosition, position, true);
 		else if (tokenizer.testIdentifierAndSkip("predicates"))
 			setSectionPosition("predicates", m_predicatesPosition, position, true);
 		else if (tokenizer.testIdentifierAndSkip("action"))
@@ -127,8 +135,10 @@ void DomainParser::findSections(ast::Domain &domain)
 			m_actionPositions.emplace_back(tokenize::InvalidStreamPosition);
 			setSectionPosition("action", m_actionPositions.back(), position);
 		}
-		else if (tokenizer.testIdentifierAndSkip("functions")
-			|| tokenizer.testIdentifierAndSkip("constraints")
+		// CHANGE: allow functions Identifier
+		else if (tokenizer.testIdentifierAndSkip("functions"))
+			setSectionPosition("functions", m_functionsPosition, position, true);
+		else if ( tokenizer.testIdentifierAndSkip("constraints")
 			|| tokenizer.testIdentifierAndSkip("durative-action")
 			|| tokenizer.testIdentifierAndSkip("derived"))
 		{
@@ -251,16 +261,16 @@ void DomainParser::parseTypeSection(ast::Domain &domain)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void DomainParser::parseConstantSection(ast::Domain &domain)
+void DomainParser::parseObjectSection(ast::Domain &domain)
 {
 	auto &tokenizer = m_context.tokenizer;
 
 	tokenizer.expect<std::string>("(");
 	tokenizer.expect<std::string>(":");
-	tokenizer.expect<std::string>("constants");
+	tokenizer.expect<std::string>("objects");
 
-	// Store constants
-	parseAndAddConstantDeclarations(m_context, domain);
+	// Store objects
+	parseAndAddObjectDeclarations(m_context, domain);
 
 	tokenizer.expect<std::string>(")");
 }
@@ -283,6 +293,23 @@ void DomainParser::parsePredicateSection(ast::Domain &domain)
 	tokenizer.expect<std::string>(")");
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// CHANGE: add functions
+void DomainParser::parseFunctionsSection(ast::Domain &domain)
+{
+	auto &tokenizer = m_context.tokenizer;
+
+	tokenizer.expect<std::string>("(");
+	tokenizer.expect<std::string>(":");
+	tokenizer.expect<std::string>("functions");
+
+	tokenizer.skipWhiteSpace();
+
+	// Store functions
+	parseAndAddFunctionDeclarations(m_context, domain);
+
+	tokenizer.expect<std::string>(")");
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void DomainParser::parseActionSection(ast::Domain &domain)

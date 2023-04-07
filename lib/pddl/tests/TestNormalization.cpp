@@ -83,8 +83,8 @@ TEST_CASE("[normalization] A simple PDDL description is preserved by normalizati
 	const auto &fact4 = initialState.facts[4].get<pddl::normalizedAST::AtomicFormula>().get<pddl::normalizedAST::PredicatePointer>();
 	CHECK(fact4->declaration == predicates[2].get());
 	REQUIRE(fact4->arguments.size() == 2);
-	CHECK(fact4->arguments[0].get<pddl::normalizedAST::ConstantPointer>()->declaration == objects[2].get());
-	CHECK(fact4->arguments[1].get<pddl::normalizedAST::ConstantPointer>()->declaration == objects[5].get());
+	CHECK(fact4->arguments[0].get<pddl::normalizedAST::ObjectPointer>()->declaration == objects[2].get());
+	CHECK(fact4->arguments[1].get<pddl::normalizedAST::ObjectPointer>()->declaration == objects[5].get());
 
 	const auto &goal = normalizedDescription.problem.value()->goal.value();
 	const auto &goalAnd = goal.get<pddl::normalizedAST::AndPointer<pddl::normalizedAST::Literal>>();
@@ -94,8 +94,8 @@ TEST_CASE("[normalization] A simple PDDL description is preserved by normalizati
 	const auto &goalAnd2 = goalAnd->arguments[2].get<pddl::normalizedAST::AtomicFormula>().get<pddl::normalizedAST::PredicatePointer>();
 	CHECK(goalAnd2->declaration == predicates[2].get());
 	REQUIRE(goalAnd2->arguments.size() == 2);
-	CHECK(goalAnd2->arguments[0].get<pddl::normalizedAST::ConstantPointer>()->declaration == objects[1].get());
-	CHECK(goalAnd2->arguments[1].get<pddl::normalizedAST::ConstantPointer>()->declaration == objects[5].get());
+	CHECK(goalAnd2->arguments[0].get<pddl::normalizedAST::ObjectPointer>()->declaration == objects[1].get());
+	CHECK(goalAnd2->arguments[1].get<pddl::normalizedAST::ObjectPointer>()->declaration == objects[5].get());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

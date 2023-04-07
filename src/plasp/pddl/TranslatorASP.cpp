@@ -15,6 +15,7 @@
 #include <plasp/pddl/translation/Goal.h>
 #include <plasp/pddl/translation/Precondition.h>
 #include <plasp/pddl/translation/Predicate.h>
+#include <plasp/pddl/translation/Function.h>
 #include <plasp/pddl/translation/Primitives.h>
 #include <plasp/pddl/translation/Variables.h>
 
@@ -64,11 +65,11 @@ void TranslatorASP::translateDomain() const
 	m_outputStream << std::endl;
 	translateTypes();
 
-	// Constants
-	if (!domain->constants.empty())
+	// Objects
+	if (!domain->objects.empty())
 	{
 		m_outputStream << std::endl;
-		translateConstants("constants", domain->constants);
+		translateObjects("objects", domain->objects);
 	}
 
 	// Predicates
@@ -76,6 +77,13 @@ void TranslatorASP::translateDomain() const
 	{
 		m_outputStream << std::endl;
 		translatePredicates();
+	}
+
+	// Functions
+	if (!domain->functions.empty())
+	{
+		m_outputStream << std::endl;
+		translateFunctions();
 	}
 
 	// Derived predicates
@@ -196,6 +204,46 @@ void TranslatorASP::translatePredicates() const
 		<< colorlog::Function("variable") << "(" << colorlog::Variable("X") << "), "
 		<< colorlog::Function("boolean") << "(" << colorlog::Variable("B") << ")."
 		<< std::endl;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void TranslatorASP::translateFunctions() const
+{
+	m_outputStream << colorlog::Heading2("numeric variables");
+
+	const auto &functions = m_description.domain->functions;
+
+	for (const auto &function : functions)
+	{
+		VariableIDMap variableIDs;
+
+		m_outputStream << std::endl << colorlog::Function("numericVariable") << "(";
+
+		translateFunctionDeclaration(m_outputStream, *function, variableIDs);
+
+		m_outputStream << ")";
+
+		if (!function->parameters.empty())
+		{
+			m_outputStream << " :- ";
+
+			VariableIDMap variableIDs;
+			// #TODO Numeric variables
+			translateVariablesForRuleBody(m_outputStream, function->parameters, variableIDs);
+		}
+
+		m_outputStream << ".";
+	}
+	// Contains does not work for numeric variables	
+	// m_outputStream
+	// 	<< std::endl << std::endl
+	// 	<< colorlog::Function("contains") << "("
+	// 	<< colorlog::Variable("X") << ", "
+	// 	<< colorlog::Keyword("value") << "(" << colorlog::Variable("X") << ", " << colorlog::Variable("B") << ")) :- "
+	// 	<< colorlog::Function("variable") << "(" << colorlog::Variable("X") << "), "
+	// 	<< colorlog::Function("boolean") << "(" << colorlog::Variable("B") << ")."
+	// 	<< std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -367,20 +415,20 @@ void TranslatorASP::translateActions() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void TranslatorASP::translateConstants(const std::string &heading, const ::pddl::normalizedAST::ConstantDeclarations &constants) const
+// #TODO Constans schould be called objects 
+void TranslatorASP::translateObjects(const std::string &heading, const ::pddl::normalizedAST::ObjectDeclarations &objects) const
 {
 	m_outputStream << colorlog::Heading2(heading.c_str());
 
-	for (const auto &constant : constants)
+	for (const auto &object : objects)
 	{
 		m_outputStream << std::endl
-			<< colorlog::Function("constant") << "("
-			<< colorlog::Keyword("constant") << "("
-			<< *constant
+			<< colorlog::Function("object") << "("
+			<< colorlog::Keyword("object") << "("
+			<< *object
 			<< "))." << std::endl;
 
-		const auto &type = constant->type;
+		const auto &type = object->type;
 
 		if (type)
 		{
@@ -390,13 +438,13 @@ void TranslatorASP::translateConstants(const std::string &heading, const ::pddl:
 			const auto &primitveType = type.value().get<::pddl::normalizedAST::PrimitiveTypePointer>();
 
 			m_outputStream << colorlog::Function("has") << "("
-				<< colorlog::Keyword("constant") << "(" << *constant << "), "
+				<< colorlog::Keyword("object") << "(" << *object << "), "
 				<< colorlog::Keyword("type") << "(" << *primitveType << "))." << std::endl;
 		}
 		else
 		{
 			m_outputStream << colorlog::Function("has") << "("
-				<< colorlog::Keyword("constant") << "(" << *constant << "), "
+				<< colorlog::Keyword("object") << "(" << *object << "), "
 				<< colorlog::Keyword("type") << "(" << colorlog::String("object") << "))." << std::endl;
 		}
 	}
@@ -416,7 +464,7 @@ void TranslatorASP::translateProblem() const
 	if (!problem->objects.empty())
 	{
 		m_outputStream << std::endl;
-		translateConstants("objects", problem->objects);
+		translateObjects("objects", problem->objects);
 	}
 
 	// Initial state
@@ -451,17 +499,18 @@ void TranslatorASP::translateInitialState() const
 	for (const auto &fact : facts)
 		::plasp::pddl::translateFact(m_outputStream, fact);
 
-	m_outputStream
-		<< std::endl << std::endl
-		<< colorlog::Function("initialState") << "("
-		<< colorlog::Variable("X") << ", "
-		<< colorlog::Keyword("value") << "(" << colorlog::Variable("X") << ", " << colorlog::Boolean("false") << ")) :- "
-		<< colorlog::Function("variable") << "(" << colorlog::Variable("X") << "), "
-		<< colorlog::Keyword("not") << " "
-		<< colorlog::Function("initialState") << "("
-		<< colorlog::Variable("X") << ", "
-		<< colorlog::Keyword("value") << "(" << colorlog::Variable("X") << ", " << colorlog::Boolean("true") << "))."
-		<< std::endl;
+
+	m_outputStream << std::endl;
+// initial defaul in meta encoding
+// 	<< std::endl << std::endl
+// 	<< colorlog::Function("initialState") << "("
+// 	<< colorlog::Variable("X") << ", "
+// 	<< colorlog::Keyword("value") << "(" << colorlog::Variable("X") << ", " << colorlog::Boolean("false") << ")) :- "
+// 	<< colorlog::Function("variable") << "(" << colorlog::Variable("X") << "), "
+// 	<< colorlog::Keyword("not") << " "
+// 	<< colorlog::Function("initialState") << "("
+// 	<< colorlog::Variable("X") << ", "
+// 	<< colorlog::Keyword("value") << "(" << colorlog::Variable("X") << ", " << colorlog::Boolean("true") << "))."
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

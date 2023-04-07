@@ -53,8 +53,9 @@ struct Domain
 
 	std::string name;
 	PrimitiveTypeDeclarations types;
-	ConstantDeclarations constants;
+	ObjectDeclarations objects;
 	PredicateDeclarations predicates;
+	PredicateDeclarations functions;
 	DerivedPredicateDeclarations derivedPredicates;
 	Actions actions;
 };
@@ -131,7 +132,7 @@ struct Problem
 	Domain *domain;
 	std::string name;
 	DerivedPredicateDeclarations derivedPredicates;
-	ConstantDeclarations objects;
+	ObjectDeclarations objects;
 	InitialState initialState;
 	std::experimental::optional<Goal> goal;
 };
